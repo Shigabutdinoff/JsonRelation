@@ -1,0 +1,19 @@
+{
+    "name": "shigabutdinoff/json-relation-builder",
+    "description": "Json Relation Builder - A package that simplifies the addition of dynamic methods for handling relationships and JSON fields in Laravel using macros.",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Shigabutdinoff\\JsonRelationBuilder\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Shigabutdinov Bulat",
+            "email": "shigabutdinovbr@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
