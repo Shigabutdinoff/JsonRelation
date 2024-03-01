@@ -1,6 +1,6 @@
 <?php
 
-namespace Shigabutdinoff\JsonRelationBuilder\Traits;
+namespace Shigabutdinoff\JsonRelation\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 
