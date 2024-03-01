@@ -7,29 +7,20 @@ use Illuminate\Database\Eloquent\Builder;
 trait JsonRelationTrait
 {
     /**
-     * @var bool
-     */
-    private bool $flag = true;
-
-    /**
      * @return void
      */
-    private function registerDynamicMethods()
+    public function __construct()
     {
-        if ($this->flag) {
-            foreach (get_class_methods(JsonRelationTrait::class) as $method) {
-                $callable = $this->$method(...);
-                Builder::macro($method, function (...$args) use ($callable, $method) {
-                    $value = $callable(...$args);
-                    if ($value instanceof \Closure) {
-                        return $value($this);
-                    }
+        foreach (get_class_methods(JsonRelationTrait::class) as $method) {
+            $callable = $this->$method(...);
+            Builder::macro($method, function (...$args) use ($callable, $method) {
+                $value = $callable(...$args);
+                if ($value instanceof \Closure) {
+                    return $value($this);
+                }
 
-                    return $this;
-                });
-            }
-
-            $this->flag = false;
+                return $this;
+            });
         }
     }
 
@@ -40,8 +31,6 @@ trait JsonRelationTrait
      */
     public function hasOneMacro(string $related, string $name = NULL)
     {
-        $this->registerDynamicMethods();
-
         if (is_null($name)) $name = $related::getModel()->getTable();
         Builder::macro($name, function () use($related) {
             return $this->getModel()->hasOne($related);
