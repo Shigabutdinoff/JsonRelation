@@ -23,7 +23,7 @@ class JsonRelationBuilderService
         $dynamicClass = basename($parentClass);
         $code = "class $dynamicClass extends $parentClass {use $trait;}";
         eval($code);
-        return (new $parentClass/*->setQuery*/($builder->getQuery()))
+        return (new $parentClass($builder->getQuery()))
             ->setModel($builder->getModel())
             ->setEagerLoads($builder->getEagerLoads())
             ->setBindings($builder->getBindings());
