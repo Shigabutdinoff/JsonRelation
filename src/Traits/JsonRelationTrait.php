@@ -6,37 +6,50 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait JsonRelationTrait
 {
-    /**
-     * @return void
-     */
-    public function __construct()
-    {
-        foreach (get_class_methods(JsonRelationTrait::class) as $method) {
-            $callable = $this->$method(...);
-            Builder::macro($method, function (...$args) use ($callable, $method) {
-                $value = $callable(...$args);
-                if ($value instanceof \Closure) {
-                    return $value($this);
-                }
-
-                return $this;
-            });
-        }
-    }
+//    /**
+//     * @return void
+//     */
+//    public function __construct()
+//    {
+//        foreach (get_class_methods(JsonRelationTrait::class) as $method) {
+//            $callable = $this->$method(...);
+//            Builder::macro($method, function (...$args) use ($callable, $method) {
+//                $value = $callable(...$args);
+//                if ($value instanceof \Closure) {
+//                    return $value($this);
+//                }
+//
+//                return $this;
+//            });
+//        }
+//    }
 
     /**
      * @param string $related
      * @param string|NULL $name
      * @return $this
      */
-    public function hasOneMacro(string $related, string $name = NULL)
+    public function setHasOneRelation(string $related, string $name = NULL)
     {
-        if (is_null($name)) $name = $related::getModel()->getTable();
-        Builder::macro($name, function () use($related) {
-            return $this->getModel()->hasOne($related);
-        });
 
-        return $this;
+        $builder = $this->setModel($this->getModel()->setRelation('roles', $this->getModel()->hasOne($related)->getModel()))/*->getModel()*/;
+
+        var_dump(get_class($builder));
+        //var_dump($builder->with('roles')->get());
+
+//        var_dump($builder->with('roles')->get());
+
+        return /*$this->with([], $this->getModel()->hasOne($related))->get()*/;
+
+//        return $this->getModel()
+//            ->where('id', 1)
+//            ->setRelation('roles', $this->getModel()->find(1)->hasOne($related)->first())
+//            ->first();
+
+//        if (is_null($name)) $name = (new $related)->getTable();
+//        return $this->getModel()->get()->map(function ($model) use ($name, $related) {
+//            return $model->setRelation($name, $model->hasOne($related)->first());
+//        });
     }
 
     /**
